@@ -1,62 +1,88 @@
-# API Design Decision Gates
+# Spec-Driven API Decision Gates
 
-The planner should not advance merely because it has enough information to generate endpoints.
+The planner must not advance merely because it can generate endpoints.
 
-## Gate 1 — Product
+## Gate 1 — Requirements
 
-Must know:
-- desired outcome
-- intended consumers
-- primary capabilities
+Must establish:
+- desired outcome;
+- intended consumers;
+- primary capabilities;
+- non-goals;
+- important constraints.
 
-## Gate 2 — Domain
+## Gate 2 — Repository evidence
 
-Must know:
-- important concepts
-- consumer-facing resources
-- relationships
+Must establish:
+- current architecture;
+- existing API surface;
+- relevant workflows;
+- technical constraints;
+- unknowns.
 
-## Gate 3 — Boundary
+## Gate 3 — Domain
 
-Must know:
-- ownership
-- sync/async
-- external dependencies
-- consistency/retry implications
+Must establish:
+- important concepts;
+- consumer-facing resources;
+- identities/lifecycles;
+- relationships.
 
-## Gate 4 — API style
+## Gate 4 — Decoupled resources
 
-Must compare reasonable styles where the choice is non-obvious.
+When a resource-oriented API is being considered, establish:
+- stable consumer-facing resource concepts;
+- resource/action separation;
+- noun-based naming for ordinary resources;
+- coherent collection/item or justified singleton semantics;
+- backend implementation independence;
+- representation boundary;
+- content handling/rendering separation when multiple representations are required;
+- resource-related caching implications.
 
-## Gate 5 — Contract
+Action/protocol paths must have an explicit reason when they do not naturally represent resource manipulation.
+
+## Gate 5 — Boundary
+
+Must establish where relevant:
+- ownership;
+- sync/async;
+- external dependencies;
+- consistency;
+- retries;
+- idempotency;
+- concurrency.
+
+## Gate 6 — API style
+
+Compare reasonable styles when the choice is non-obvious. Do not choose by ideology.
+
+## Gate 7 — Contract
 
 Must settle:
-- methods
-- representations
-- errors
-- status semantics
-- pagination/search where relevant
+- methods/operations;
+- representations;
+- errors;
+- status semantics;
+- pagination/search where relevant;
+- security semantics.
 
-## Gate 6 — Production concerns
+## Gate 8 — Specialist review
 
-Must address relevant:
-- auth
-- authorization
-- security
-- rate limits
-- caching
-- observability
-- evolution
+Relevant stakeholder findings must be resolved, explicitly accepted as open, or deferred with a reason.
 
-## Gate 7 — Review
+## Gate 9 — Consumer simulation
 
-Reviewer findings must be:
-- resolved
-- explicitly accepted as open
-- or deferred with a reason
+Important success and failure journeys must be walked through the proposed specification.
 
-## Gate 8 — User confirmation
+## Gate 10 — SDD validation
 
-Major decisions must be explicitly confirmed by the user.
+All applicable six constraints must PASS.
 
-A detailed document with only PROPOSED decisions is a draft, not a finalized architecture.
+## Gate 11 — User confirmation
+
+Major architectural decisions must be explicitly confirmed by the user.
+
+## Gate 12 — Contract stage
+
+A machine-readable contract may be generated/maintained only after the design is validated and the contract stage is entered.

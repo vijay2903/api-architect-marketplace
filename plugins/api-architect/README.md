@@ -1,65 +1,15 @@
 # API Architect
 
-Repository-aware, design-only API architecture planner for Claude Code.
+A design-only Claude Code plugin for repository-aware, Spec-Driven API architecture.
 
-## Invocation
+## v1.4.0 focus
 
-```text
-/api-architect:api-design
-```
+The API design workflow now treats **resource decoupling** as an explicit architecture gate when resource-oriented APIs are considered.
 
-## What makes it different
+The plugin asks whether each resource is a stable consumer-facing concept rather than a backend method, class, database table, service, queue, or pipeline stage. It also checks noun-based naming, collection/item semantics, backend independence, representation boundaries, content handlers/renderers where needed, and caching implications.
 
-The plugin is intentionally not an endpoint generator.
+Specialist review is adaptive. `resource-design-reviewer` is invoked when resource coupling, action-like paths, implementation leakage, representation flexibility, or resource-related caching are material concerns.
 
-It uses a staged architecture process:
+## Design-only boundary
 
-```text
-Product
-  ↓
-Consumers
-  ↓
-Capabilities
-  ↓
-Actions
-  ↓
-Domain
-  ↓
-Resources
-  ↓
-Relationships
-  ↓
-Boundaries
-  ↓
-API style
-  ↓
-Interaction semantics
-  ↓
-Security / reliability / evolution
-  ↓
-Endpoint contract
-  ↓
-Adversarial review
-  ↓
-User confirmation
-```
-
-It maintains:
-
-```text
-docs/api-design/API_DESIGN.md
-```
-
-and never implements the API.
-
-## Supported modes
-
-- Greenfield
-- Continue existing API + gap analysis
-- Audit existing API
-- Redesign existing API
-- Refine an existing API design
-
-## Standard requirements interview
-
-Before concrete architecture, the plugin asks a consistent requirements interview and always ends with an open-ended question. Repository-specific follow-ups are then added based on the codebase.
+The plugin does not implement routes, controllers, schemas, authentication, infrastructure, or application code. It produces and maintains design/specification artifacts only.

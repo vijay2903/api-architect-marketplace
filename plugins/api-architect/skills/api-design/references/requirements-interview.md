@@ -9,7 +9,7 @@ The interview establishes requirements before architecture.
 - Clarify answers that materially change architecture.
 - Always ask the open-ended final question.
 - Keep requirements separate from proposals.
-- Add repository-derived follow-up questions after investigation.
+- Add repository-derived questions after investigation.
 
 ## Questions
 1. Application/system
@@ -17,7 +17,7 @@ The interview establishes requirements before architecture.
 3. Desired capability gap
 4. Non-goals
 5. Consumers and current/planned consumers
-6. User/client capabilities
+6. Client capabilities
 7. Constraints
 8. Expected workload
 9. User-facing domain concepts
@@ -30,7 +30,7 @@ The interview establishes requirements before architecture.
 16. Deployment/operations
 17. Additional user context
 
-## Do not decide during this interview
+## Do not decide during the interview
 - REST vs GraphQL
 - JWT vs sessions
 - URL vs header versioning

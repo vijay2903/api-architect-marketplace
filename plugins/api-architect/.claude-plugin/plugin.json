@@ -1,5 +1,5 @@
 {
   "name": "api-architect",
-  "version": "1.2.0",
-  "description": "Interactive repository-aware API architecture planner for Claude Code. Designs APIs through repository analysis, user interviews, explicit decisions, and confirmation without implementing code."
+  "version": "1.4.0",
+  "description": "Interactive repository-aware, Spec-Driven API architecture planner with decoupled resource design, adaptive stakeholder review, consumer simulation, and validated contract evolution. Design-only; never implements application code."
 }
