@@ -83,7 +83,64 @@ For "redesign from scratch", current API code remains evidence/history. It is no
 
 This skill cannot physically undo existing implementation because it is design-only. It can define the replacement target and migration/deprecation implications.
 
-## Phase 1 — User/product interview
+
+## Phase 1 — Standard API Design Requirements Interview
+
+Before making concrete architecture proposals, run a standardized requirements interview.
+
+The purpose is to establish **requirements**, not to choose technologies.
+
+Do not ask for endpoint names, JWT vs sessions, URL versioning, pagination strategy, database schema, or other architecture choices at this stage.
+
+### Interview rules
+
+- Ask questions in small batches, not all at once.
+- Skip a question only when the repository and prior conversation already establish the answer reliably.
+- If the user says "I don't know", record it as unknown. Do not invent an answer.
+- If an answer materially changes architecture, ask a clarification before moving on.
+- Preserve the user's terminology.
+- Do not turn an answer into a design decision until the architecture phase.
+- Always finish the standard interview with the open-ended question.
+- After the standard interview, add repository-specific questions as needed.
+
+### Standard questions
+
+1. **What is the application/system?**
+2. **What are you trying to achieve with the API?**
+3. **What should the API enable that the current system does not?**
+4. **What is explicitly out of scope?**
+5. **Who will consume the API, and which consumers exist today vs are planned?**
+6. **What should users or clients be able to accomplish through the API?** Ask for capabilities, not endpoint names.
+7. **What technical, business, deployment, cost, compatibility, or infrastructure constraints must be preserved?**
+8. **What kind of workload do you expect?** Accept qualitative answers if exact numbers are unknown.
+9. **What are the important things or concepts users interact with?** Do not ask for database tables.
+10. **Who needs to authenticate, and what should each consumer be allowed to access?** Do not choose an auth mechanism yet.
+11. **Can any operation take longer than a normal HTTP request?** Consider ML inference, video/audio processing, files, exports, reports, batch jobs, external workflows.
+12. **Which client interactions are needed?** Consider pagination, filtering, sorting, search, uploads/downloads, streaming, real-time updates, bulk operations, webhooks, notifications.
+13. **Does the API handle sensitive, private, financial, personal, proprietary, or otherwise protected data?**
+14. **Are there regulatory, compliance, security, or organizational requirements?**
+15. **How independently will API consumers and the backend be deployed or changed?**
+16. **How do you expect the API to be deployed and operated?**
+17. **Is there anything else about the application, users, constraints, future plans, or API that you think we should know before we design it?**
+
+For question 17, explicitly tell the user:
+
+> You can mention anything that wasn't covered above. You don't need to use API terminology.
+
+Record the answer under `Additional User Context`.
+
+### Interview output
+
+After the user answers, summarize:
+- requirements established
+- unknowns
+- constraints
+- assumptions that must not yet become decisions
+- questions that require repository investigation
+
+Ask the user to correct the summary if there are material ambiguities before moving to architecture.
+
+## Phase 2 — User/product interview
 
 Ask only the highest-leverage questions.
 
@@ -109,7 +166,7 @@ If an answer is ambiguous:
 - give 2–3 concrete interpretations
 - ask one resolving question
 
-## Phase 2 — Repository understanding
+## Phase 3 — Repository understanding
 
 Delegate read-only investigation to `repository-analyst`.
 
@@ -144,7 +201,7 @@ Do not read or expose secret values. Skip generated/dependency/large binary mate
 
 The analyst must return evidence with file paths and distinguish FACT from INFERENCE.
 
-## Phase 3 — Reconciliation
+## Phase 4 — Reconciliation
 
 Present:
 
@@ -165,7 +222,7 @@ Things neither repository nor user has established.
 
 Ask the user to correct the system understanding before moving to detailed API design.
 
-## Phase 4 — Capabilities and actions
+## Phase 5 — Capabilities and actions
 
 Build a capability map.
 
@@ -189,7 +246,7 @@ Check for:
 - notifications/webhooks
 - state transitions
 
-## Phase 5 — Domain and resource modeling
+## Phase 6 — Domain and resource modeling
 
 For each proposed resource ask:
 - What real concept does it represent?
@@ -213,7 +270,7 @@ Do not decide this mechanically.
 
 Produce a lightweight relationship diagram/table before endpoint design.
 
-## Phase 6 — Boundary and interaction decisions
+## Phase 7 — Boundary and interaction decisions
 
 Before paths, decide:
 - synchronous vs asynchronous
@@ -228,7 +285,7 @@ Before paths, decide:
 
 For ML/AI workloads explicitly check whether inference/processing can exceed normal request timeouts.
 
-## Phase 7 — API style evaluation
+## Phase 8 — API style evaluation
 
 Evaluate REST first, but do not assume REST.
 
@@ -252,7 +309,7 @@ Evaluate against actual requirements:
 
 If REST is chosen, verify the actual architectural constraints rather than treating "HTTP + JSON" as equivalent to REST.
 
-## Phase 8 — Interaction model
+## Phase 9 — Interaction model
 
 Only now propose:
 - URI/resource structure
@@ -300,7 +357,7 @@ Do not impose UUIDs universally.
 
 For financial domains, explicitly avoid floating-point representation for monetary values unless the user has a deliberate reason. Prefer a precise decimal/currency representation or integer minor units as an implementation/contract decision appropriate to the system.
 
-## Phase 9 — Cross-cutting concerns
+## Phase 10 — Cross-cutting concerns
 
 Discuss only relevant concerns:
 
@@ -384,7 +441,7 @@ Plan:
 - changelog/deprecation policy
 - machine-readable contract where useful
 
-## Phase 10 — Endpoint review
+## Phase 11 — Endpoint review
 
 Before presenting a proposed endpoint table, run these checks:
 
@@ -401,7 +458,7 @@ Before presenting a proposed endpoint table, run these checks:
 11. Are there duplicate ways to accomplish the same action?
 12. Would a future implementation change force a contract change unnecessarily?
 
-## Phase 11 — Adversarial review
+## Phase 12 — Adversarial review
 
 Run `api-reviewer`.
 
@@ -421,7 +478,7 @@ The reviewer should challenge:
 
 Do not convert reviewer findings into decisions automatically.
 
-## Phase 12 — Decision gates
+## Phase 13 — Decision gates
 
 At each major design stage, summarize:
 
@@ -442,7 +499,47 @@ Only explicit user acceptance can create `CONFIRMED`.
 
 A decision can become `LOCKED` only when the user indicates they do not want it revisited during the current design.
 
-## Phase 13 — Design artifact
+### Required interview record
+
+Preserve the requirements interview separately from architectural decisions.
+
+Add:
+
+```text
+## API Design Interview
+
+### Standard Questions
+
+| # | Question | User Answer |
+|---|---|---|
+| 1 | Application/system | ... |
+| 2 | API goal | ... |
+| 3 | Desired capability gap | ... |
+| 4 | Non-goals | ... |
+| 5 | Consumers | ... |
+| 6 | Capabilities | ... |
+| 7 | Constraints | ... |
+| 8 | Expected workload | ... |
+| 9 | Domain concepts | ... |
+| 10 | Authentication/access requirements | ... |
+| 11 | Long-running work | ... |
+| 12 | Client interaction needs | ... |
+| 13 | Sensitive/protected data | ... |
+| 14 | Compliance/security requirements | ... |
+| 15 | Consumer/backend independence | ... |
+| 16 | Deployment/operations | ... |
+| 17 | Additional user context | ... |
+
+### Repository-Derived Questions
+
+| Question | Answer | Architectural impact |
+|---|---|---|
+| ... | ... | ... |
+```
+
+Do not mix interview answers with the Decisions table.
+
+## Phase 14 — Design artifact
 
 Create/update:
 
@@ -504,7 +601,7 @@ Maintain a decision table:
 | Area | Decision | Status | Evidence / Rationale |
 |---|---|---|---|
 
-## Phase 14 — Resume/reconciliation
+## Phase 15 — Resume/reconciliation
 
 On a later invocation:
 

@@ -59,3 +59,7 @@ and never implements the API.
 - Audit existing API
 - Redesign existing API
 - Refine an existing API design
+
+## Standard requirements interview
+
+Before concrete architecture, the plugin asks a consistent requirements interview and always ends with an open-ended question. Repository-specific follow-ups are then added based on the codebase.

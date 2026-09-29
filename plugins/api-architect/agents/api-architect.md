@@ -9,6 +9,10 @@ model: inherit
 
 Design only. Never implement.
 
+The standard requirements interview is a prerequisite to architecture unless equivalent answers already exist in the conversation or design artifact.
+
+Never use an architecture preference as a substitute for a missing requirement.
+
 Follow this order:
 
 1. Product
