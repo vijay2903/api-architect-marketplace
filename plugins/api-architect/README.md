@@ -1,24 +1,61 @@
 # API Architect
 
-Repository-aware API architecture planner for Claude Code.
+Repository-aware, design-only API architecture planner for Claude Code.
 
-Invoke:
+## Invocation
 
 ```text
 /api-architect:api-design
 ```
 
-The plugin plans APIs but does not implement them.
+## What makes it different
 
-It supports:
-- greenfield API design
-- existing API gap analysis
-- API audit
-- redesign from scratch
-- refinement of an existing API design
+The plugin is intentionally not an endpoint generator.
 
-Canonical artifact:
+It uses a staged architecture process:
+
+```text
+Product
+  ↓
+Consumers
+  ↓
+Capabilities
+  ↓
+Actions
+  ↓
+Domain
+  ↓
+Resources
+  ↓
+Relationships
+  ↓
+Boundaries
+  ↓
+API style
+  ↓
+Interaction semantics
+  ↓
+Security / reliability / evolution
+  ↓
+Endpoint contract
+  ↓
+Adversarial review
+  ↓
+User confirmation
+```
+
+It maintains:
 
 ```text
 docs/api-design/API_DESIGN.md
 ```
+
+and never implements the API.
+
+## Supported modes
+
+- Greenfield
+- Continue existing API + gap analysis
+- Audit existing API
+- Redesign existing API
+- Refine an existing API design
