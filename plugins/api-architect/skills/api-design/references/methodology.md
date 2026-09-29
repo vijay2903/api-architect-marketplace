@@ -1,105 +1,80 @@
 # API Architecture Methodology
 
+Use this as the architectural reasoning reference. The main skill owns orchestration, budgets, state, and stop conditions.
+
 ## 1. Start with the product
 
-Ask:
-- What is this system?
-- What are we trying to achieve?
-- Who is the user?
-- What problem does the API solve?
-- What is explicitly out of scope?
+Establish:
+- system and desired outcome;
+- API problem/capability gap;
+- users/consumers;
+- non-goals.
 
-## 2. Identify API consumers
+Do not choose technologies while gathering requirements.
 
-Possible consumers:
-- own web frontend
-- own mobile application
-- internal services
-- business partners
-- third-party developers
-- public developers
+## 2. Identify consumers and capabilities
 
-Consumer type changes requirements around stability, auth, documentation, rate limits, and versioning.
+Consumers may include the own web/mobile client, internal services, partners, or third parties. Consumer type affects stability, auth, documentation, limits, and evolution.
 
-## 3. Identify capabilities before endpoints
+Identify what consumers need to accomplish before naming endpoints or exposing implementation structures.
 
-Ask what users need to accomplish.
+## 3. Model concepts and resources
 
-Do not begin with CRUD or existing Python functions.
+A resource is a meaningful consumer-facing concept, not automatically a database table, Python class, queue item, or internal pipeline stage.
 
-Example:
-- submit a reel
-- inspect processing status
-- retrieve summary
-- search saved reels
-- delete a reel
+For each resource establish:
+- consumer reason;
+- stable identity;
+- lifecycle/state;
+- ownership;
+- relationships.
 
-## 4. Identify resources
+Analytics may be a representation/query, read model, subresource, or action depending on consumer needs.
 
-A resource is a meaningful thing exposed through the API.
+## 4. Decide boundaries before paths
 
-Do not equate resource with database table or Python class.
+Resolve where the API boundary sits and whether work is:
+- synchronous or asynchronous;
+- request/response or event/webhook where required;
+- owned by a user/tenant/system;
+- subject to consistency, retry, idempotency, or concurrency constraints.
 
-Potential examples:
-- User
-- Reel
-- Order
-- Job
-- Collection
+Do not design future infrastructure merely to keep hypothetical options open.
 
-An internal component is not automatically an API resource.
+## 5. Evaluate API style
 
-## 5. Identify relationships
+Evaluate REST first when appropriate, but compare RPC, GraphQL, gRPC, event-driven, or hybrid styles when actual requirements make the choice non-obvious.
 
-Examples:
+Use client diversity, resource orientation, query flexibility, streaming, long-running work, internal communication, public stability, and operational complexity as evidence.
 
-User -> Reels
-Reel -> Processing Job
-Reel -> Summary
+## 6. Design the contract last
 
-Relationships may influence representations, nested resources, and links.
+Only after the architecture is coherent decide:
+- URI/resource structure;
+- methods;
+- representations;
+- errors/status semantics;
+- pagination/filtering/search;
+- auth/authorization details;
+- evolution mechanics.
 
-## 6. Evaluate API style
+Technical contract mechanics are architect-owned unless they change product behavior.
 
-REST should be evaluated through:
-- client-server separation
-- statelessness
-- cacheability
-- uniform interface
-- layered system
-- optional code-on-demand
+## 7. Long-term concerns
 
-Also evaluate whether RPC, GraphQL, event-driven interfaces, gRPC, or another style better fits a specific requirement.
+Address only relevant:
+- compatibility/versioning;
+- rate limits/quotas;
+- security/privacy;
+- caching;
+- observability;
+- documentation;
+- support/deprecation.
 
-Do not force REST for ideological reasons.
+Use workload and deployment constraints as complexity guardrails.
 
-## 7. Design the contract
+## 8. Confirmation
 
-Only after the domain model is understood:
-- methods
-- resource identifiers
-- representations
-- request/response shapes
-- errors
-- status transitions
-- asynchronous behavior
-- authentication
-- authorization
+A proposal is not a user decision. The architect should recommend technical choices. Ask the user only when a decision materially affects product behavior, scope, privacy, compatibility, or another meaningful product-level trade-off.
 
-## 8. Long-term concerns
-
-Plan where relevant:
-- backward compatibility
-- versioning
-- rate limiting
-- security
-- observability
-- documentation
-- support
-- deprecation
-
-## 9. User confirmation
-
-A proposal is not a decision.
-
-Keep unresolved items visible until the user confirms them.
+Confirmed decisions should be locked only when the user indicates they should not be revisited during the current design.

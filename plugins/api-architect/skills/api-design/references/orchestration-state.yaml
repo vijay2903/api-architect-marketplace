@@ -1,0 +1,38 @@
+# Working-state template. Create under the target repository only when persistence helps resume/incremental work.
+status: DESIGNING
+phase: initialize
+current_state:
+  revision: v0.1
+  architecture_status: proposed
+  contract_revision: null
+  review_status: pending
+  release_readiness: not_ready
+requirements: []
+constraints: []
+non_goals: []
+repository_facts: []
+confirmed_decisions: []
+locked_decisions: []
+open_user_decisions: []
+architect_decisions: []
+assumptions: []
+resources: []
+architecture: {}
+contract_status: {}
+review_status: {}
+partial_stage:
+  authorized: false
+  allowed_placeholders: []
+dependencies: {}
+invalidated: []
+last_changed: []
+superseded: []
+budgets:
+  preferred_user_decisions: 5
+  hard_user_decisions: 8
+  requirements_rounds: 2
+  architecture_proposal_passes: 1
+  contract_generation_passes: 1
+  validation_rounds: 1
+  consolidation_passes: 1
+  final_validation_passes: 1
