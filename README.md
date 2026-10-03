@@ -1,26 +1,43 @@
 # API Architect Marketplace
 
-Personal Claude Code marketplace for repository-aware API architecture planning.
+Personal Claude Code marketplace for Spec-Driven API architecture planning.
 
-## Current release
+## v1.4.0 — Decoupled Resource Architecture
 
-**API Architect 1.4.1** is an orchestration/token-efficiency release. The architecture methodology remains requirements-first, but the workflow now uses:
+This version extends the v1.3 Spec-Driven Development workflow with a dedicated **decoupled resource architecture** discipline based on the supplied REST chapter.
 
-- one bounded repository evidence pass plus targeted follow-ups;
-- compact design state instead of repeatedly rereading the full design history;
-- explicit `USER DECISION REQUIRED` / `ARCHITECT DECISION` / `IMPLEMENTATION DETAIL` ownership;
-- decision and phase budgets;
-- scoped specialist context and no-rediscovery protection;
-- parallel validation with one consolidation/fix pass;
-- dependency-aware incremental invalidation;
-- explicit partial-stage placeholders;
-- architecture freeze and hard stop conditions;
-- authoritative current-state index that overrides historical review state;
-- explicit artifact-consistency and release-readiness gates;
-- implementation/architecture/contract abstraction boundaries;
-- one packaged reviewer with bounded validation lenses rather than undocumented phantom agents.
+The planner now explicitly checks that API resources:
 
-The goal is **deep reasoning once, not repeated reasoning with unchanged inputs**.
+- represent stable consumer-facing concepts;
+- are decoupled from actions and backend methods;
+- use noun-based collection/item structures where appropriate;
+- do not expose database, service, queue, or pipeline topology;
+- remain meaningful when backend technologies evolve;
+- separate resource semantics from wire representations;
+- isolate content handling/rendering when multiple representations are actually required;
+- consider caching as part of the resource contract.
+
+The plugin remains design-only. It does not implement the API.
+
+## Install
+
+After pushing this repository to GitHub, add the marketplace in Claude Code:
+
+```text
+/plugin marketplace add YOUR_GITHUB_OWNER/api-architect-marketplace
+```
+
+Then install:
+
+```text
+/plugin install api-architect@api-architect-marketplace
+```
+
+## Use
+
+```text
+/api-architect:api-design
+```
 
 ## Repository layout
 
@@ -33,59 +50,7 @@ api-architect-marketplace/
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── agents/
-│       │   ├── api-architect.md
-│       │   ├── api-reviewer.md
-│       │   └── repository-analyst.md
 │       ├── skills/
-│       │   └── api-design/
-│       │       ├── SKILL.md
-│       │       └── references/
 │       └── README.md
 └── README.md
 ```
-
-## Install from GitHub
-
-After pushing this repository to GitHub, add the marketplace in Claude Code:
-
-```text
-/plugin marketplace add YOUR_GITHUB_OWNER/api-architect-marketplace
-```
-
-Then install the plugin:
-
-```text
-/plugin install api-architect@api-architect-marketplace
-```
-
-The exact marketplace name is the `name` field in `.claude-plugin/marketplace.json`.
-
-## Use
-
-Open one of your projects in Claude Code and run:
-
-```text
-/api-architect:api-design
-```
-
-The plugin is design-only. It should not implement the API.
-
-## Development
-
-Edit files under:
-
-```text
-plugins/api-architect/
-```
-
-The supporting reference files are loaded only when their topic is needed; they are not intended to be copied wholesale into every agent context.
-
-Then:
-
-```bash
-git add .
-git commit -m "..."
-git push
-```
-
-For testing a local checkout before pushing, Claude Code can load a local marketplace/plugin source; use the current Claude Code plugin documentation for the exact local-development invocation supported by your installed version.

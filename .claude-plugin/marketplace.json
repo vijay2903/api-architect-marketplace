@@ -1,16 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "api-architect-marketplace",
-  "version": "1.4.1",
-  "description": "Personal Claude Code marketplace for repository-aware API architecture planning with bounded orchestration, authoritative current-state management, and scoped validation.",
+  "version": "1.4.0",
+  "description": "A personal Claude Code marketplace containing the API Architect plugin.",
   "owner": {
     "name": "Personal"
   },
   "plugins": [
     {
       "name": "api-architect",
-      "description": "Repository-aware API architecture planning with compact state, bounded decisions, one-pass evidence collection, parallel validation, incremental invalidation, and no implementation.",
-      "version": "1.4.1",
+      "description": "Interactive repository-aware, spec-driven API architecture planning with decoupled resource design, adaptive stakeholder review, consumer simulation, and validated contract evolution without implementing the API.",
+      "version": "1.4.0",
       "source": "./plugins/api-architect",
       "category": "development",
       "keywords": [
@@ -18,10 +18,11 @@
         "architecture",
         "rest",
         "api-design",
+        "spec-driven-development",
         "system-design",
+        "openapi",
         "ml",
-        "ai",
-        "orchestration"
+        "ai"
       ]
     }
   ]

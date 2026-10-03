@@ -1,115 +1,88 @@
-# API Design Decision Gates
+# Spec-Driven API Decision Gates
 
-A gate prevents the workflow from advancing because it merely has enough information to generate endpoints. Each gate has entry, exit, and stop conditions.
+The planner must not advance merely because it can generate endpoints.
 
-## Gate 1 — Product
+## Gate 1 — Requirements
 
 Must establish:
 - desired outcome;
 - intended consumers;
 - primary capabilities;
-- non-goals.
+- non-goals;
+- important constraints.
 
-**Exit:** no material product ambiguity remains.
+## Gate 2 — Repository evidence
 
-**Stop:** do not ask architecture questions before this gate is satisfied.
+Must establish:
+- current architecture;
+- existing API surface;
+- relevant workflows;
+- technical constraints;
+- unknowns.
 
-## Gate 2 — Domain
+## Gate 3 — Domain
 
 Must establish:
 - important concepts;
 - consumer-facing resources;
 - identities/lifecycles;
-- relationships;
-- ownership boundaries.
+- relationships.
 
-**Exit:** every confirmed capability has a justified domain representation.
+## Gate 4 — Decoupled resources
 
-**Stop:** do not turn database tables into endpoints merely because they exist.
+When a resource-oriented API is being considered, establish:
+- stable consumer-facing resource concepts;
+- resource/action separation;
+- noun-based naming for ordinary resources;
+- coherent collection/item or justified singleton semantics;
+- backend implementation independence;
+- representation boundary;
+- content handling/rendering separation when multiple representations are required;
+- resource-related caching implications.
 
-## Gate 3 — Boundary
+Action/protocol paths must have an explicit reason when they do not naturally represent resource manipulation.
+
+## Gate 5 — Boundary
 
 Must establish where relevant:
-- ownership/tenancy;
-- sync/async behavior;
+- ownership;
+- sync/async;
 - external dependencies;
 - consistency;
-- retry/idempotency;
-- concurrency/conflict behavior.
+- retries;
+- idempotency;
+- concurrency.
 
-**Exit:** interaction boundaries are coherent.
+## Gate 6 — API style
 
-**Stop:** do not design hypothetical infrastructure.
+Compare reasonable styles when the choice is non-obvious. Do not choose by ideology.
 
-## Gate 4 — API style
+## Gate 7 — Contract
 
-Compare reasonable styles only when the choice is non-obvious.
-
-**Exit:** one style is recommended with evidence and meaningful trade-offs recorded.
-
-**Stop:** do not reopen style because of preference alone after confirmation.
-
-## Gate 5 — Contract
-
-Settle:
-- methods;
+Must settle:
+- methods/operations;
 - representations;
-- errors/status semantics;
+- errors;
+- status semantics;
 - pagination/search where relevant;
-- compatibility mechanics.
+- security semantics.
 
-**Exit:** contract can be generated from the frozen architecture.
+## Gate 8 — Specialist review
 
-**Stop:** technical mechanics do not become user questions unless they change product behavior.
+Relevant stakeholder findings must be resolved, explicitly accepted as open, or deferred with a reason.
 
-## Gate 6 — Production concerns
+## Gate 9 — Consumer simulation
 
-Address relevant:
-- auth/authorization;
-- security/privacy;
-- rate limits/quotas;
-- caching;
-- observability;
-- evolution.
+Important success and failure journeys must be walked through the proposed specification.
 
-**Exit:** no relevant concern is silently assumed.
+## Gate 10 — SDD validation
 
-## Gate 7 — Parallel review
+All applicable six constraints must PASS.
 
-Run independent review lenses with scoped context. The packaged `api-reviewer` may execute multiple lenses; do not invent separate agents that are not in the package. Findings must be classified and assigned one owner.
+## Gate 11 — User confirmation
 
-**Exit:** required lenses are complete or explicitly N/A, and findings are ready for one consolidation pass.
+Major architectural decisions must be explicitly confirmed by the user.
 
-**Exit:** findings are resolved, auto-fixed, explicitly accepted, or deferred.
+## Gate 12 — Contract stage
 
-**Stop:** do not start another full review because a technical detail was corrected.
-
-## Gate 8 — User confirmation / freeze
-
-Major user-owned decisions must be explicitly confirmed.
-
-Then:
-
-```text
-CONFIRMED → VALIDATED → LOCKED
-```
-
-A locked decision reopens only for a new requirement, actual contradiction, or security-critical issue.
-
-## Gate 9 — Final validation
-
-Run one scoped final validation after the consolidation pass.
-
-If no critical defect, contradiction, or unresolved user decision remains, **STOP**.
-
-## Gate 8 — Artifact consistency
-
-Must reconcile current state, decision ledger, architecture revision, contract revision, historical findings, placeholders, and packaged review roles.
-
-**Exit:** one authoritative current state exists and no stale historical material is presented as active.
-
-## Gate 9 — Release readiness
-
-Architectural completeness is not automatically release readiness. Mark release-ready only when required validation is complete, critical findings are resolved, current state is consistent, and any partial contract is explicitly authorized.
-
-**Stop:** do not run additional review loops merely to increase confidence.
+A machine-readable contract may be generated/maintained only after the design is validated and the contract stage is entered.
